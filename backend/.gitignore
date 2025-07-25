@@ -1,2 +1,1 @@
-echo "*" > .gitignore
-echo "!.gitignore" >> .gitignore
+.env
