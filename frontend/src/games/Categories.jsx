@@ -21,7 +21,6 @@ const gameRouteMap = {
   "Sorting Order": "Sorting",
   "CardGame": "Card",
   "Scenario Play": "Scenario",
-  "Crossword": "crossword",
 }
 const gameTypes = Object.keys(gameRouteMap);
 

@@ -5,7 +5,6 @@ import Leaderboard from './leaderboard/leaderboard'
 import Categories from './games/categories'
 import Timeline from './Resources/Timeline'
 import Quiz from './games/Quiz'
-import Crossword from './games/Crossword'
 import Scenario from './games/Scenarioplay'
 import Sorting from './games/sorting'
 import CardGame from './games/CardGame';
@@ -17,7 +16,6 @@ const App = () => {
         <Route path="/game">
           <Route index element={<Categories />} />
           <Route path="quiz" element={<Quiz />} />
-          <Route path="crossword" element={<Crossword />} />
           <Route path="Card" element={<CardGame />} />
           <Route path="Scenario" element={<Scenario />} />
           <Route path="Sorting" element={<Sorting />} />
