@@ -19,7 +19,7 @@ const categories = [
 const gameRouteMap = {
   "Quiz": "quiz",
   "Sorting Order": "Sorting",
-  "Match the Card": "Match",
+  "CardGame": "Card",
   "Scenario Play": "Scenario",
   "Crossword": "crossword",
 }
