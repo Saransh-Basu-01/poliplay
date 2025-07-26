@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home'
+import Leaderboard from './leaderboard/leaderboard'
+import Categories from './games/categories'
+import Timeline from './Resources/Timeline'
+import Documentation from './Resources/Documentation';
+import Chatbot from './Resources/Chatbot';
+import Quiz from './games/Quiz'
+import Scenario from './games/Scenarioplay'
+import Sorting from './games/sorting'
+import CardGame from './games/CardGame';
+import Resources from './Resources/Resources';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/game">
+          <Route index element={<Categories />} />
+          <Route path="quiz" element={<Quiz />} />
+          <Route path="Card" element={<CardGame />} />
+          <Route path="Scenario" element={<Scenario />} />
+          <Route path="Sorting" element={<Sorting />} />
+        </Route>
+        <Route path="/resources" element={<Resources />} />
+        <Route path="/resources/timeline" element={<Timeline />} />
+        <Route path="/resources/documentation" element={<Documentation />} />
+        <Route path="/resources/chatbot" element={<Chatbot />} />
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
