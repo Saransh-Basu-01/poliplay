@@ -26,7 +26,7 @@ def test_nepal_specific_questions():
         print("⏳ Processing...")
         
         try:
-            response = requests.post(f"{BASE_URL}/ask/", json={
+            response = requests.post(f"{BASE_URL}/chat/", json={
                 "question": question,
                 "language": language
             })

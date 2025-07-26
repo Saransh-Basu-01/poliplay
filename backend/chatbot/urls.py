@@ -6,7 +6,7 @@ from .views import (
 # from govs_pdfs import fetch
 
 urlpatterns = [
-    path('ask/', LegalQAView.as_view(), name='legal_qa'),
+    path('chat/', LegalQAView.as_view(), name='legal_qa'),
     path('history/', QuestionHistoryView.as_view(), name='question_history'),
     path('health/', health_check, name='health_check'),
     path('search/', search_documents, name='search_documents'),
