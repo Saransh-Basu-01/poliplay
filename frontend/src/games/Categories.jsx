@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import sortingData from '../components/data/sorting';
+import sortingData from '../components/data/Sorting';
+import ScenarioData from '../components/data/Scenario'; 
 import p1 from '../assets/p1.jpg';
 import p2 from '../assets/p2.jpg';
 import p3 from '../assets/p3.jpg';
@@ -41,6 +42,15 @@ const Categories = () => {
     let state = {};
     if (route === "Sorting" && sortingData[selectedCategory]) {
       state = sortingData[selectedCategory] || {};
+    }
+      if (route === "Scenario") {
+      const categoryScenarios = ScenarioData.filter(item => item.category === selectedCategory);
+      if (categoryScenarios.length > 0) {
+        state = {
+          category: selectedCategory,
+          questions: categoryScenarios[0].questions 
+        };
+      }
     }
     navigate(`/game/${route}`, { state });
   }
