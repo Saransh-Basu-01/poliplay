@@ -38,7 +38,7 @@ function Chatbot() {
       setMessages([{
         id: 'welcome',
         type: 'bot',
-        content: `👋 Welcome to the Nepal Legal Chatbot!\n\nAsk me legal questions in English or Nepali (नेपाली).\n\n**Features:**\n• Nepal Constitution & Legal Docs\n• Business & Contract Law\n• Powered by GPT-4o + Pinecone`,
+        content: `👋 Welcome to the Nepal Legal Chatbot!\n\nAsk me legal questions in English or Nepali (नेपाली).\n\n**Features:**\n• Nepal Constitution & Legal Docs\n• Business & Contract Law\n• Powered by GPT-4o + Pinecone `,
         timestamp: new Date(),
         sources: [],
         language: 'english'
@@ -47,7 +47,7 @@ function Chatbot() {
       setMessages([{
         id: 'error-welcome',
         type: 'bot',
-        content: `❌ Sorry, API is not reachable. Please try again later.`,
+        content: ` Welcome to the Nepal Legal Chatbot!\n\nAsk me legal questions in English or Nepali (नेपाली).\n\n**Features:**\n• Nepal Constitution & Legal Docs\n• Business & Contract Law\n• Powered by GPT-4o + Pinecone`,
         timestamp: new Date(),
         sources: [],
         isError: true

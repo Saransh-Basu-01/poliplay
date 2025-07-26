@@ -3,18 +3,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import ApiService from '../services/Api';
 import LoadingSpinner from './LoadingSpinner';
 
-// Animated background blobs for enhanced UI
+// Animated background blobs for enhanced UI (copied for consistency)
 const BackgroundBlobs = () => (
   <>
-    <div className="absolute top-[-100px] left-[-120px] w-96 h-96 bg-gradient-to-br from-blue-300 via-purple-300 to-pink-200 rounded-full opacity-30 blur-3xl z-0 animate-blob-slow" />
-    <div className="absolute bottom-[-120px] right-[-100px] w-96 h-96 bg-gradient-to-br from-pink-200 via-indigo-200 to-blue-300 rounded-full opacity-20 blur-3xl z-0 animate-blob-fast" />
+    <div className="absolute top-[-100px] left-[-120px] w-96 h-96 bg-gradient-to-br from-blue-300 via-blue-300 to-blue-400 rounded-full opacity-25 blur-3xl z-0 animate-blob-slow" />
+    <div className="absolute bottom-[-120px] right-[-100px] w-96 h-96 bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400 rounded-full opacity-15 blur-3xl z-0 animate-blob-fast" />
   </>
 );
 
 const QuizApp = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
   // State
   const [selectedCategory, setSelectedCategory] = useState(location.state?.category || null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(location.state?.categoryId || null);
@@ -27,8 +26,10 @@ const QuizApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userName, setUserName] = useState('');
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showNext, setShowNext] = useState(false);
 
-  // Fallback & recovery for categoryId
+  // Load categories if needed
   useEffect(() => {
     if (categories.length === 0) {
       ApiService.fetchCategories()
@@ -37,16 +38,15 @@ const QuizApp = () => {
     }
   }, []);
 
+  // Set categoryId from categories if missing
   useEffect(() => {
-    if (!selectedCategory) {
-      setLoading(true);
-      ApiService.fetchCategories()
-        .then((categoriesData) => setCategories(categoriesData))
-        .catch(() => setError('Failed to load categories. Make sure backend is running on port 8000.'))
-        .finally(() => setLoading(false));
+    if (selectedCategory && !selectedCategoryId && categories.length > 0) {
+      const catObj = categories.find(cat => cat.name === selectedCategory);
+      if (catObj) setSelectedCategoryId(catObj.id);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, selectedCategoryId, categories]);
 
+  // Load categoryData when category changes
   useEffect(() => {
     if (selectedCategory) {
       setLoading(true);
@@ -57,18 +57,13 @@ const QuizApp = () => {
           setCurrentQuestion(0);
           setUserAnswers({});
           setShowResults(false);
+          setSelectedAnswer(null);
+          setShowNext(false);
         })
         .catch(() => setError('Failed to load category data. Please try again.'))
         .finally(() => setLoading(false));
     }
   }, [selectedCategory, selectedCategoryId]);
-
-  useEffect(() => {
-    if (selectedCategory && !selectedCategoryId && categories.length > 0) {
-      const catObj = categories.find(cat => cat.name === selectedCategory);
-      if (catObj) setSelectedCategoryId(catObj.id);
-    }
-  }, [selectedCategory, selectedCategoryId, categories]);
 
   // Utility
   const loadCategories = async () => {
@@ -95,6 +90,8 @@ const QuizApp = () => {
       setCurrentQuestion(0);
       setUserAnswers({});
       setShowResults(false);
+      setSelectedAnswer(null);
+      setShowNext(false);
     } catch (err) {
       setError('Failed to load category data. Please try again.');
     } finally {
@@ -102,13 +99,32 @@ const QuizApp = () => {
     }
   };
 
-  const handleAnswer = (questionId, selectedAnswer) => {
+  // Main quiz logic, similar to 2nd code
+  const clickOption = (option) => {
+    if (selectedAnswer !== null) return;
+    setSelectedAnswer(option);
+    setShowNext(true);
     setUserAnswers(prev => ({
       ...prev,
-      [questionId]: selectedAnswer
+      [categoryData.questions[currentQuestion].id]: option
     }));
   };
 
+  const nextQuestion = () => {
+    if (currentQuestion < categoryData.questions.length - 1) {
+      setCurrentQuestion(prev => prev + 1);
+      setSelectedAnswer(null);
+      setShowNext(false);
+    } else {
+      submitQuiz();
+    }
+  };
+
+  const newQuiz = () => {
+    loadCategoryData(selectedCategory, selectedCategoryId);
+  };
+
+  // Submit as before but using selectedCategoryId
   const submitQuiz = async () => {
     if (Object.keys(userAnswers).length === 0) {
       setError('Please answer at least one question');
@@ -155,10 +171,12 @@ const QuizApp = () => {
     setShowResults(false);
     setQuizResults(null);
     setError(null);
+    setSelectedAnswer(null);
+    setShowNext(false);
     navigate('/game');
   };
 
-  // Helper function to get category icons
+  // Category icon helper
   const getCategoryIcon = (categoryName) => {
     const iconMap = {
       'Manga & Anime': '🎌',
@@ -175,7 +193,7 @@ const QuizApp = () => {
     return iconMap[categoryName] || '📝';
   };
 
-  // If categoryId is unrecoverable, prompt for reset
+  // Handle unrecoverable categoryId loss
   if (!selectedCategoryId && selectedCategory) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 relative overflow-hidden">
@@ -288,16 +306,14 @@ const QuizApp = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
             <button
-              onClick={() => loadCategoryData(selectedCategory, selectedCategoryId)}
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold flex items-center justify-center shadow hover:scale-105 transition-transform"
+              onClick={newQuiz}
+              className="pixel-button"
             >
-              <span className="mr-2">🔄</span>
-              Retake Quiz
+              New Quiz
             </button>
             <button
               onClick={resetQuiz}
-              className="px-8 py-3 bg-gradient-to-r from-gray-500 to-gray-700 text-white rounded-lg font-semibold flex items-center justify-center shadow hover:scale-105 transition-transform"
-            >
+              className="pixel-button">
               <span className="mr-2">📚</span>
               Choose Another Category
             </button>
@@ -317,8 +333,7 @@ const QuizApp = () => {
                   alert('Results copied to clipboard!');
                 }
               }}
-              className="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow"
-            >
+              className="pixel-button">
               📱 Share Results
             </button>
           </div>
@@ -435,213 +450,67 @@ const QuizApp = () => {
   }
 
   const currentQuestionData = categoryData.questions[currentQuestion];
-  const isLastQuestion = currentQuestion === categoryData.questions.length - 1;
-  const answeredQuestions = Object.keys(userAnswers).length;
-  const completionPercentage = Math.round((answeredQuestions / categoryData.questions.length) * 100);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6 relative overflow-hidden">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-200 to-blue-900 relative overflow-hidden">
       <BackgroundBlobs />
-      <div className="max-w-4xl mx-auto z-10 relative">
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6 shadow">
-            <strong>Error:</strong> {error}
-          </div>
-        )}
+      <div className="h-auto w-[90%] sm:w-96 bg-white shadow-xl rounded-2xl p-6 relative flex flex-col items-center text-center space-y-6 z-10">
+        {/* Question Number */}
+        <span className="absolute top-1 left-2 bg-blue-200 text-blue-800 text-sm font-semibold px-2 py-1 rounded-full shadow">
+          {currentQuestion + 1}/{categoryData.questions.length}
+        </span>
 
-        {/* Header with Back Button */}
-        <div className="flex justify-between items-center mb-6">
-          <button
-            onClick={resetQuiz}
-            className="flex items-center text-blue-600 hover:text-purple-600 transition-colors font-bold"
-          >
-            <span className="mr-2">←</span>
-            Back to Categories
-          </button>
-          <div className="text-right">
-            <div className="text-sm text-gray-500">Quiz Progress</div>
-            <div className="text-lg font-bold text-blue-600">
-              {currentQuestion + 1} / {categoryData.questions.length}
-            </div>
-          </div>
-        </div>
+        {/* Question */}
+        <h1 className="text-lg sm:text-xl font-bold text-gray-800">
+          {currentQuestionData.question_text}
+        </h1>
 
-        {/* Main Quiz Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8 mb-6 border-2 border-blue-100">
-          <h1 className="text-3xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-            {getCategoryIcon(selectedCategory)} {selectedCategory}
-          </h1>
-          
-          {/* Progress Section */}
-          <div className="text-center mb-8">
-            <div className="flex justify-center items-center space-x-6 mb-4">
-              <span className="text-sm font-medium">Progress: {answeredQuestions}/{categoryData.questions.length}</span>
-              <div className="w-48 bg-gray-200 rounded-full h-3 shadow-inner">
-                <div 
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-300" 
-                  style={{ width: `${completionPercentage}%` }}
-                />
-              </div>
-              <span className="text-sm font-medium">{completionPercentage}% Complete</span>
-            </div>
-          </div>
-
-          {/* Question Section */}
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-600">
-                Question {currentQuestion + 1} of {categoryData.questions.length}
-              </h3>
-              {currentQuestionData.difficulty_level && (
-                <span className={`px-3 py-1 rounded-full text-xs font-medium shadow ${
-                  currentQuestionData.difficulty_level === 'easy' ? 'text-green-600 bg-green-100' :
-                  currentQuestionData.difficulty_level === 'medium' ? 'text-yellow-600 bg-yellow-100' :
-                  'text-red-600 bg-red-100'
-                }`}>
-                  {currentQuestionData.difficulty_level.toUpperCase()}
-                </span>
-              )}
-            </div>
-            <p className="text-2xl font-medium text-gray-800 mb-8 leading-relaxed">
-              {currentQuestionData.question_text}
-            </p>
-          </div>
-
-          {/* Options Section */}
-          <div className="space-y-3 mb-8">
-            {currentQuestionData.options && currentQuestionData.options.map((option, index) => (
-              <button
-                key={option.id}
-                onClick={() => handleAnswer(currentQuestionData.id, option.option_text)}
-                className={`w-full p-4 text-left rounded-xl border-2 transition-all transform hover:scale-[1.02] shadow ${
-                  userAnswers[currentQuestionData.id] === option.option_text
-                    ? 'border-blue-500 bg-blue-50 shadow-lg'
-                    : 'border-gray-200 hover:border-blue-300 hover:shadow-md bg-white'
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold transition-colors ${
-                    userAnswers[currentQuestionData.id] === option.option_text
-                      ? 'border-blue-500 bg-blue-500 text-white'
-                      : 'border-gray-300 text-gray-400'
-                  }`}>
-                    {String.fromCharCode(65 + index)}
-                  </div>
-                  <span className="text-lg flex-1">{option.option_text}</span>
-                  {userAnswers[currentQuestionData.id] === option.option_text && (
-                    <div className="text-blue-500 text-xl animate-bounce">✓</div>
-                  )}
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {/* Navigation Section */}
-          <div className="flex justify-between items-center">
-            <button
-              onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
-              disabled={currentQuestion === 0}
-              className="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform flex items-center"
-            >
-              ← Previous
-            </button>
-
-            <div className="text-center">
-              <p className="text-sm text-gray-600">
-                {userAnswers[currentQuestionData.id] ? 
-                  <span className="text-green-600 font-medium animate-pulse">Answered ✓</span> : 
-                  <span className="text-gray-500">Not answered yet</span>
-                }
-              </p>
-            </div>
-
-            {isLastQuestion ? (
-              <button
-                onClick={submitQuiz}
-                disabled={loading || answeredQuestions === 0}
-                className="px-8 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg hover:from-green-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-transform font-semibold flex items-center shadow"
-              >
-                {loading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                    Submitting...
-                  </>
-                ) : (
-                  `Submit Quiz (${answeredQuestions} answers)`
-                )}
-              </button>
-            ) : (
-              <button
-                onClick={() => setCurrentQuestion(Math.min(categoryData.questions.length - 1, currentQuestion + 1))}
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-transform flex items-center shadow"
-              >
-                Next →
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Question Navigation Grid */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-          <h4 className="text-lg font-semibold mb-4 text-center text-blue-700">Question Navigation</h4>
-          <div className="flex flex-wrap justify-center gap-2">
-            {categoryData.questions.map((_, index) => (
+        {/* Options */}
+        <div className="flex flex-col space-y-3 w-full">
+          {currentQuestionData.options.map((option, index) => {
+            let bgColor = "bg-gray-100 hover:bg-gray-200";
+            if (selectedAnswer) {
+              if (option.option_text === currentQuestionData.correct_answer) {
+                bgColor = "bg-green-300";
+              } else if (option.option_text === selectedAnswer && option.option_text !== currentQuestionData.correct_answer) {
+                bgColor = "bg-red-300";
+              }
+            }
+            return (
               <button
                 key={index}
-                onClick={() => setCurrentQuestion(index)}
-                className={`w-10 h-10 rounded-lg transition-all font-medium shadow ${
-                  index === currentQuestion
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white scale-110'
-                    : userAnswers[categoryData.questions[index].id]
-                    ? 'bg-green-500 text-white hover:bg-green-600'
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                }`}
-                title={`Question ${index + 1}${userAnswers[categoryData.questions[index].id] ? ' (answered)' : ''}`}
+                onClick={() => clickOption(option.option_text)}
+                disabled={selectedAnswer !== null}
+                className={`${bgColor} text-gray-800 py-2 px-4 rounded shadow text-sm sm:text-base transition-all`}
               >
-                {index + 1}
+                {option.option_text}
               </button>
-            ))}
-          </div>
-          <div className="flex justify-center mt-4 space-x-6 text-sm">
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded mr-2"></div>
-              Current
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-green-500 rounded mr-2"></div>
-              Answered
-            </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-gray-200 rounded mr-2"></div>
-              Unanswered
-            </div>
-          </div>
+            );
+          })}
         </div>
+
+        {/* Next Button */}
+        {showNext && (
+          <button
+            onClick={nextQuestion}
+            className="bg-amber-400 hover:bg-amber-500 text-black font-semibold py-2 px-6 rounded-md shadow transition-all duration-200"
+          >
+            {currentQuestion === categoryData.questions.length - 1 ? "Finish" : "Next"}
+          </button>
+        )}
+
+        {/* Score */}
+        <span className="text-md text-blue-700 mt-2">
+          Score: {
+            Object.entries(userAnswers).reduce((acc, [qid, ans]) => {
+              const q = categoryData.questions.find(q => q.id === parseInt(qid));
+              return acc + (q && q.correct_answer === ans ? 1 : 0);
+            }, 0)
+          }
+        </span>
       </div>
     </div>
   );
 };
 
 export default QuizApp;
-
-/* 
-For even more visual pop, add to your tailwind.config.js:
-  animation: {
-    'blob-slow': 'blob 24s infinite',
-    'blob-fast': 'blob 16s infinite',
-    'bounce-slow': 'bounce 2.2s infinite',
-    'pulse-slow': 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-    'fade-in': 'fadeIn 0.8s ease-in',
-  },
-  keyframes: {
-    blob: {
-      '0%,100%': { transform: 'translate(0px,0px) scale(1)' },
-      '33%': { transform: 'translate(30px,-45px) scale(1.1)' },
-      '66%': { transform: 'translate(-20px,20px) scale(0.9)' },
-    },
-    fadeIn: {
-      '0%': { opacity: 0 },
-      '100%': { opacity: 1 },
-    },
-  }
-*/
