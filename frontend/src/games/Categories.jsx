@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import sortingData from '../components/data/sorting';
 import p1 from '../assets/p1.jpg';
 import p2 from '../assets/p2.jpg';
 import p3 from '../assets/p3.jpg';
@@ -34,12 +35,16 @@ const Categories = () => {
   const handleClosePopup = () => {
     setSelectedCategory(null);
   };
-    const handleGameSelect = (gameName) => {
-    const route = gameRouteMap[gameName];
-    if (route) {
-      navigate(`/game/${route}`);
+  const handleGameSelect = (gameName) => {
+  const route = gameRouteMap[gameName];
+  if (route) {
+    let state = {};
+    if (route === "Sorting" && sortingData[selectedCategory]) {
+      state = sortingData[selectedCategory] || {};
     }
-  };
+    navigate(`/game/${route}`, { state });
+  }
+};
   return (
     <div className="p-6 bg-gradient-to-br from-blue-100 via-blue-300 to-blue-500 min-h-screen relative">
       <h2 className="text-3xl font-bold mb-10 text-center italic">Explore Categories</h2>

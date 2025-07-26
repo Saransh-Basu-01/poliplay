@@ -8,7 +8,7 @@ import Documentation from './Resources/Documentation';
 import Chatbot from './Resources/Chatbot';
 import Quiz from './games/Quiz'
 import Scenario from './games/Scenarioplay'
-import Sorting from './games/sorting'
+import Sorting from './games/Sorting'
 import CardGame from './games/CardGame';
 import Resources from './Resources/Resources';
 
