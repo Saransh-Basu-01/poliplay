@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import ApiService from '../services/Api';
+
+import sortingData from '../components/data/Sorting';
+import ScenarioData from '../components/data/Scenario'; 
+
 import p1 from '../assets/p1.jpg';
 import p2 from '../assets/p2.jpg';
 import p3 from '../assets/p3.jpg';
@@ -51,17 +56,29 @@ const Categories = () => {
     setSelectedCategory(null);
   };
 
-  const handleGameSelect = (gameName) => {
-    const route = gameRouteMap[gameName];
-    if (route) {
-      // Pass category name to the game page
-      navigate(`/game/${route}`, { state: { category: selectedCategory } });
-    }
-  };
-
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading categories...</div>;
+const handleGameSelect = (gameName) => {
+  const route = gameRouteMap[gameName];
+  let state = { category: selectedCategory };
+  if (route === "Sorting" && sortingData[selectedCategory]) {
+    state = { ...state, ...sortingData[selectedCategory] };
   }
+  if (route === "Scenario") {
+    const categoryScenarios = ScenarioData.filter(item => item.category === selectedCategory);
+    if (categoryScenarios.length > 0) {
+      state = {
+        category: selectedCategory,
+        questions: categoryScenarios[0].questions
+      };
+    }
+  }
+  if (route) {
+    navigate(`/game/${route}`, { state });
+  }
+};
+
+if (loading) {
+  return <div className="flex items-center justify-center min-h-screen">Loading categories...</div>;
+}
   if (error) {
     return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
   }

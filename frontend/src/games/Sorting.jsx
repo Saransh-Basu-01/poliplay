@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-
-
-
 const Sorting = () => {
   const location = useLocation();
   const { title, bins = [], cards = [] } = location.state || {};
@@ -101,7 +98,7 @@ const Sorting = () => {
                   style={{ overflow: "visible" }}
                 >
                   <h3 className="font-bold text-xl text-center text-blue-700 mb-4 flex items-center justify-center gap-2">
-                    🗃️ Available Cards
+                    🗃 Available Cards
                   </h3>
                   <div className="space-y-3">
                     {cardData.map((card, index) => (
