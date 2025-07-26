@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ApiService from '../services/Api';
 import p1 from '../assets/p1.jpg';
 import p2 from '../assets/p2.jpg';
 import p3 from '../assets/p3.jpg';
@@ -7,26 +8,41 @@ import p4 from '../assets/p4.jpg';
 import p5 from '../assets/p5.jpg';
 import p6 from '../assets/p6.avif';
 
-const categories = [
-  { id: 1, name: 'Political System', image: p1 },
-  { id: 2, name: 'Political History', image: p6 },
-  { id: 3, name: 'Law', image: p2 },
-  { id: 4, name: 'Legal Awareness', image: p5 },
-  { id: 5, name: 'Rights', image: p4 },
-  { id: 6, name: 'Constitution', image: p3 },
-];
+const images = [p1, p6, p2, p5, p4, p3];
 
 const gameRouteMap = {
-  "Quiz": "quiz",
-  "Sorting Order": "Sorting",
-  "CardGame": "Card",
-  "Scenario Play": "Scenario",
-}
+  Quiz: 'quiz',
+  'Sorting Order': 'Sorting',
+  CardGame: 'Card',
+  'Scenario Play': 'Scenario',
+};
 const gameTypes = Object.keys(gameRouteMap);
 
 const Categories = () => {
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    ApiService.fetchCategories()
+      .then((data) => {
+        // Assume data is an array: [{id, name, ...}]
+        setCategories(
+          data.map((cat, idx) => ({
+            ...cat,
+            image: images[idx % images.length] // Assign images in order
+          }))
+        );
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError('Failed to load categories');
+        setLoading(false);
+      });
+  }, []);
+
   const handleClick = (categoryName) => {
     setSelectedCategory(categoryName);
   };
@@ -34,16 +50,25 @@ const Categories = () => {
   const handleClosePopup = () => {
     setSelectedCategory(null);
   };
-    const handleGameSelect = (gameName) => {
+
+  const handleGameSelect = (gameName) => {
     const route = gameRouteMap[gameName];
     if (route) {
-      navigate(`/game/${route}`);
+      // Pass category name to the game page
+      navigate(`/game/${route}`, { state: { category: selectedCategory } });
     }
   };
+
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading categories...</div>;
+  }
+  if (error) {
+    return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
+  }
+
   return (
     <div className="p-6 bg-gradient-to-br from-blue-100 via-blue-300 to-blue-500 min-h-screen relative">
       <h2 className="text-3xl font-bold mb-10 text-center italic">Explore Categories</h2>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {categories.map((category) => (
           <button
@@ -64,13 +89,11 @@ const Categories = () => {
           </button>
         ))}
       </div>
-
       {selectedCategory && (
         <div className="absolute top-50 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 border-4 border-white rounded-2xl shadow-2xl p-6 w-[700px] h-[400px] z-30 animate-fade-in">
           <h2 className="text-xl font-extrabold text-center mb-5 text-purple-800 drop-shadow">
             🎮 Games for <span className="text-pink-700">{selectedCategory}</span>
           </h2>
-
           <div className="flex flex-col gap-3 items-center">
             {gameTypes.map((game, index) => (
               <button
@@ -82,7 +105,6 @@ const Categories = () => {
               </button>
             ))}
           </div>
-
           <div className="text-center mt-5">
             <button
               onClick={handleClosePopup}
@@ -93,7 +115,6 @@ const Categories = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };

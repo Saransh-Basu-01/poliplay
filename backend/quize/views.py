@@ -2,7 +2,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.utils import timezone
-from .models import Category, Card, QuizAttempt
+from .models import Category, Question, QuizAttempt
 from .serializers import (
     CategorySerializer, 
     CategoryListSerializer, 
@@ -14,7 +14,7 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategoryListSerializer
 
 class CategoryDetailView(generics.RetrieveAPIView):
-    queryset = Category.objects.prefetch_related('bins', 'cards__correct_bin')
+    queryset = Category.objects.prefetch_related('questions__options')
     serializer_class = CategorySerializer
     lookup_field = 'name'
 
@@ -51,10 +51,12 @@ def quiz_stats(request):
         attempts = QuizAttempt.objects.filter(category=category)
         if attempts.exists():
             avg_score = sum(attempt.score for attempt in attempts) / attempts.count()
+            avg_percentage = sum((attempt.score / attempt.total_questions) * 100 for attempt in attempts) / attempts.count()
             category_stats.append({
                 'category': category.name,
                 'attempts': attempts.count(),
-                'average_score': round(avg_score, 2)
+                'average_score': round(avg_score, 2),
+                'average_percentage': round(avg_percentage, 2)
             })
     
     overall_avg = sum(attempt.score for attempt in QuizAttempt.objects.all()) / total_attempts

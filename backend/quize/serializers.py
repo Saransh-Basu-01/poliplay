@@ -1,38 +1,42 @@
 from rest_framework import serializers
-from .models import Category, Bin, Card, QuizAttempt, QuizAnswer
+from .models import Category, Question, Option, QuizAttempt, QuizAnswer
 
-class BinSerializer(serializers.ModelSerializer):
+class OptionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Bin
-        fields = ['id', 'name']
+        model = Option
+        fields = ['id', 'option_text']
 
-class CardSerializer(serializers.ModelSerializer):
-    correct = serializers.CharField(source='correct_bin.name', read_only=True)
+class QuestionSerializer(serializers.ModelSerializer):
+    options = OptionSerializer(many=True, read_only=True)
     
     class Meta:
-        model = Card
-        fields = ['id', 'text', 'correct']
+        model = Question
+        fields = ['id', 'question_text', 'correct_answer', 'options']
 
 class CategorySerializer(serializers.ModelSerializer):
-    bins = BinSerializer(many=True, read_only=True)
-    cards = CardSerializer(many=True, read_only=True)
+    questions = QuestionSerializer(many=True, read_only=True)
     
     class Meta:
         model = Category
-        fields = ['id', 'name', 'bins', 'cards']
+        fields = ['id', 'name', 'description', 'questions']
 
 class CategoryListSerializer(serializers.ModelSerializer):
+    question_count = serializers.SerializerMethodField()
+    
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'description', 'question_count']
+    
+    def get_question_count(self, obj):
+        return obj.questions.count()
 
 class QuizAnswerSerializer(serializers.ModelSerializer):
-    card_id = serializers.IntegerField()
-    selected_bin_name = serializers.CharField()
+    question_id = serializers.IntegerField()
+    selected_answer = serializers.CharField()
     
     class Meta:
         model = QuizAnswer
-        fields = ['card_id', 'selected_bin_name']
+        fields = ['question_id', 'selected_answer']
 
 class QuizAttemptSerializer(serializers.ModelSerializer):
     answers = QuizAnswerSerializer(many=True, write_only=True)
@@ -49,19 +53,16 @@ class QuizAttemptSerializer(serializers.ModelSerializer):
         
         correct_count = 0
         for answer_data in answers_data:
-            card = Card.objects.get(id=answer_data['card_id'])
-            selected_bin = Bin.objects.get(
-                category=quiz_attempt.category,
-                name=answer_data['selected_bin_name']
-            )
-            is_correct = card.correct_bin == selected_bin
+            question = Question.objects.get(id=answer_data['question_id'])
+            selected_answer = answer_data['selected_answer']
+            is_correct = question.correct_answer == selected_answer
             if is_correct:
                 correct_count += 1
                 
             QuizAnswer.objects.create(
                 quiz_attempt=quiz_attempt,
-                card=card,
-                selected_bin=selected_bin,
+                question=question,
+                selected_answer=selected_answer,
                 is_correct=is_correct
             )
         

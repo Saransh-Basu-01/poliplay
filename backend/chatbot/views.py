@@ -181,3 +181,8 @@ class DocumentUploadView(APIView):
             "document_id": document.id,
             "file_name": file.name
         })
+@api_view(['POST'])
+def fetch_government_pdfs(request):
+    from govs_pdfs import scrape_and_download_all_pdfs
+    scrape_and_download_all_pdfs()
+    return Response({"message": "PDF scraping initiated."})
