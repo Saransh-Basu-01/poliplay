@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import ApiService from '../services/Api';
 import LoadingSpinner from './LoadingSpinner';
 
 const QuizApp = () => {
+  const location = useLocation();
+  // get category from navigation state!
+  const [selectedCategory, setSelectedCategory] = useState(location.state?.category || null);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [categoryData, setCategoryData] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
@@ -14,9 +17,39 @@ const QuizApp = () => {
   const [error, setError] = useState(null);
   const [userName, setUserName] = useState('');
 
+  // Only load all categories if you need them
   useEffect(() => {
-    loadCategories();
-  }, []);
+    if (!selectedCategory) {
+      setLoading(true);
+      ApiService.fetchCategories()
+        .then((categoriesData) => {
+          setCategories(categoriesData);
+        })
+        .catch((err) => {
+          setError('Failed to load categories. Make sure backend is running on port 8000.');
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [selectedCategory]);
+
+  // If selectedCategory is set, fetch its questions!
+  useEffect(() => {
+    if (selectedCategory) {
+      setLoading(true);
+      setError(null);
+      ApiService.fetchCategoryData(selectedCategory)
+        .then((data) => {
+          setCategoryData(data);
+          setCurrentQuestion(0);
+          setUserAnswers({});
+          setShowResults(false);
+        })
+        .catch((err) => {
+          setError('Failed to load category data. Please try again.');
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [selectedCategory]);
 
   const loadCategories = async () => {
     try {

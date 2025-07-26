@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home'
-import Leaderboard from './leaderboard/Leaderboard'
+import Leaderboard from './leaderboard/leaderboard'
 import Categories from './games/Categories'
 import Timeline from './Resources/Timeline'
 import Documentation from './Resources/Documentation';
@@ -28,7 +28,6 @@ const App = () => {
         <Route path="/resources/timeline" element={<Timeline />} />
         <Route path="/resources/documentation" element={<Documentation />} />
         <Route path="/resources/chatbot" element={<Chatbot />} />
-         <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </Router>
   );

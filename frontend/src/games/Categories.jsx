@@ -13,7 +13,7 @@ import p4 from '../assets/p4.jpg';
 import p5 from '../assets/p5.jpg';
 import p6 from '../assets/p6.avif';
 
-const images = [p1, p6, p2, p5, p4, p3];
+const images = [p3, p2, p5, p6, p1, p4];
 
 const gameRouteMap = {
   Quiz: 'quiz',
