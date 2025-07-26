@@ -1,0 +1,216 @@
+{
+  "metadata": {
+    "extraction_date": "2025-07-25T22:52:59.190858",
+    "total_articles": 21,
+    "sources": [
+      "Kathmandu Post",
+      "Ministry of Law, Justice and Parliamentary Affairs",
+      "Election Commission",
+      "Law Commission",
+      "Office of PM and Council of Ministers"
+    ],
+    "categories_count": {
+      "news_articles": 18,
+      "government_announcements": 0,
+      "official_notices": 3,
+      "political_updates": 0
+    }
+  },
+  "data": {
+    "news_articles": [
+      {
+        "title": "Congress rift deepens in Bagmati as four ministers quit",
+        "text": "Majority of lawmakers back no-confidence motion against Chief Minister Lama, push for Baniya as new chief minister.",
+        "url": "https://kathmandupost.com/province-no-3/2025/07/25/congress-rift-deepens-in-bagmati-as-four-ministers-quit",
+        "publish_date": "",
+        "source": "Kathmandu Post",
+        "category": "news",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "House extends term of probe panel investigating tampering with ‘cooling-off period’ clause",
+        "text": "The lower house unanimously approves a seven-day extension for the parliamentary committee.",
+        "url": "https://kathmandupost.com/national/2025/07/25/house-extends-term-of-probe-panel-investigating-tampering-with-cooling-off-period-clause",
+        "publish_date": "",
+        "source": "Kathmandu Post",
+        "category": "news",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "Former President Bhandari defends political comeback after UML bars her return",
+        "text": "Says party membership was renewed as per the constitution that protects her right to rejoin politics.",
+        "url": "https://kathmandupost.com/politics/2025/07/25/former-president-bhandari-defends-political-comeback-after-uml-bars-her-return",
+        "publish_date": "",
+        "source": "Kathmandu Post",
+        "category": "news",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "126 women in Kathmandu metropolis tested positive for HPV infection",
+        "text": "Types 16 and 18 of human papillomavirus, responsible for 70 percent of cervical cancers, were found to be responsible for the infection in 28 women.",
+        "url": "https://kathmandupost.com/national/2025/07/25/126-women-in-kathmandu-metropolis-tested-positive-for-hpv-infection",
+        "publish_date": "",
+        "source": "Kathmandu Post",
+        "category": "news",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "A prize now reduced to a joke",
+        "text": "It’s rare for a President to publicly show such fascination with the Nobel Peace Prize.",
+        "url": "https://kathmandupost.com/columns/2025/07/24/a-prize-now-reduced-to-a-joke",
+        "publish_date": "",
+        "source": "Kathmandu Post",
+        "category": "news",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "President returns Constitutional Council bill to Parliament for reconsideration",
+        "text": "The head of state objects to the newly passed bill, calling it inconsistent with the spirit of the Constitution.",
+        "url": "https://kathmandupost.com/national/2025/07/24/president-returns-constitutional-council-bill-to-parliament-for-reconsideration",
+        "publish_date": "",
+        "source": "Kathmandu Post",
+        "category": "news",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "RSP, RPP continue House protest over visit visa controversy",
+        "text": "Opposition parties demand high-level or parliamentary probe; Speaker proceeds despite protest.",
+        "url": "https://kathmandupost.com/national/2025/07/24/rsp-rpp-continue-house-protest-over-visit-visa-controversy",
+        "publish_date": "",
+        "source": "Kathmandu Post",
+        "category": "news",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "कानूनी शब्दकोश",
+        "text": "कानूनी शब्दकोश",
+        "url": "https://lawcommission.gov.np/content/13529/law-dictionary/",
+        "publish_date": "2025-07-25T22:52:45.857366",
+        "source": "Law Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "मौजुदा सूची दर्ता गर्ने सम्बन्धी सूचना - आ.व. २०८२-८३",
+        "text": "मौजुदा सूची दर्ता गर्ने सम्बन्धी सूचना - आ.व. २०८२-८३",
+        "url": "https://lawcommission.gov.np/content/13528/standing-list-2082-83/",
+        "publish_date": "2025-07-25T22:52:45.857366",
+        "source": "Law Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "मस्यौदामा राय, सुझाव पठाउने सम्बन्धी सूचना - उच्च शिक्षण संस्था",
+        "text": "मस्यौदामा राय, सुझाव पठाउने सम्बन्धी सूचना - उच्च शिक्षण संस्था",
+        "url": "https://lawcommission.gov.np/content/13526/information-about-opinion--suggestions-on-the-draft/",
+        "publish_date": "2025-07-25T22:52:45.857366",
+        "source": "Law Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "वेबसाइट प्रविष्ट गर्नुहोस्(Enter Website)",
+        "text": "वेबसाइट प्रविष्ट गर्नुहोस्(Enter Website)",
+        "url": "https://election.gov.np/np/",
+        "publish_date": "2025-07-25T22:52:50.019414",
+        "source": "Election Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "मतदाता नामावली प्रि-रजिष्ट्रेशन र अध्यावधिक(Online Pre-Enrollment)",
+        "text": "मतदाता नामावली प्रि-रजिष्ट्रेशन र अध्यावधिक(Online Pre-Enrollment)",
+        "url": "https://applyvr.election.gov.np",
+        "publish_date": "2025-07-25T22:52:50.019414",
+        "source": "Election Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "मतदाता नामावली(Voter Roll)आफ्नो नाम खोज्नुहोस्",
+        "text": "मतदाता नामावली(Voter Roll)आफ्नो नाम खोज्नुहोस्",
+        "url": "https://election.gov.np/np/page/voter-list-db",
+        "publish_date": "2025-07-25T22:52:50.019414",
+        "source": "Election Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "निर्वाचन परिणाम(Election Result)",
+        "text": "निर्वाचन परिणाम(Election Result)",
+        "url": "https://result.election.gov.np",
+        "publish_date": "2025-07-25T22:52:50.019414",
+        "source": "Election Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "इ-बुलेटिन(E-bulletin)",
+        "text": "इ-बुलेटिन(E-bulletin)",
+        "url": "https://ebulletin.election.gov.np",
+        "publish_date": "2025-07-25T22:52:50.019414",
+        "source": "Election Commission",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "प्रधानमन्त्री",
+        "text": "प्रधानमन्त्री",
+        "url": "https://opmcm.gov.np/#",
+        "publish_date": "2025-07-25T22:52:54.977117",
+        "source": "Office of PM and Council of Ministers",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "सम्माननीय प्रधानमन्त्री",
+        "text": "सम्माननीय प्रधानमन्त्री",
+        "url": "https://www.opmcm.gov.np/prime-minister/",
+        "publish_date": "2025-07-25T22:52:54.977117",
+        "source": "Office of PM and Council of Ministers",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "सम्माननीय प्रमज्यूको सल्लाहकार तथा अन्य पदमा नियुक्त पदाधिकारीहरु",
+        "text": "सम्माननीय प्रमज्यूको सल्लाहकार तथा अन्य पदमा नियुक्त पदाधिकारीहरु",
+        "url": "https://www.opmcm.gov.np/pm-team/",
+        "publish_date": "2025-07-25T22:52:54.977117",
+        "source": "Office of PM and Council of Ministers",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      }
+    ],
+    "government_announcements": [],
+    "official_notices": [
+      {
+        "title": "संघ, प्रदेश र स्थानीय तहमा सञ्चालन गरिने वार्षिक विकास कार्यक्रम (आ.व. २०८२।०८३) भाग-२",
+        "text": "संघ, प्रदेश र स्थानीय तहमा सञ्चालन गरिने वार्षिक विकास कार्यक्रम (आ.व. २०८२।०८३) भाग-२",
+        "url": "https://molcpa.gov.np/content/356/annual-development-program-for-federal--state-and/",
+        "publish_date": "2025-07-25T22:52:57.186589",
+        "source": "Ministry of Law, Justice and Parliamentary Affairs",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "सेवाकालिन प्रशिक्षण कार्यक्रम सम्बन्धी सूचना",
+        "text": "सेवाकालिन प्रशिक्षण कार्यक्रम सम्बन्धी सूचना",
+        "url": "https://molcpa.gov.np/content/355/notifications-regarding-services-training-program/",
+        "publish_date": "2025-07-25T22:52:57.186589",
+        "source": "Ministry of Law, Justice and Parliamentary Affairs",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      },
+      {
+        "title": "मिति २०८२ असार ४ गते प्रकाशन गरिएको अध्यक्ष र विज्ञ सदस्य पदको व्यावसायिक कार्ययोजनाको प्रस्तुतीकरण तथा अन्तर्वार्ता कार्यक्रमको सूचना सच्याईएको सम्बन्धमा",
+        "text": "मिति २०८२ असार ४ गते प्रकाशन गरिएको अध्यक्ष र विज्ञ सदस्य पदको व्यावसायिक कार्ययोजनाको प्रस्तुतीकरण तथा अन्तर्वार्ता कार्यक्रमको सूचना सच्याईएको सम्बन्धमा",
+        "url": "https://molcpa.gov.np/content/354/the-presentation-of-the-presentation-and-interviewation/",
+        "publish_date": "2025-07-25T22:52:57.186589",
+        "source": "Ministry of Law, Justice and Parliamentary Affairs",
+        "category": "government_update",
+        "extracted_at": "2025-07-25T22:52:59.187850"
+      }
+    ],
+    "political_updates": []
+  }
+}

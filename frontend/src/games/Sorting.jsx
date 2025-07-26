@@ -9,7 +9,7 @@ const Sorting = () => {
   const { title, bins = [], cards = [] } = location.state || {};
 
   const [cardData, setCardData] = useState(cards);
-s
+
   const [binData, setBinData] = useState(
     bins.reduce((acc, bin) => {
       acc[bin] = [];
